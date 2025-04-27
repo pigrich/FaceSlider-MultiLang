@@ -19,28 +19,21 @@
     --mouth-border-color: #962d2d;
 }
 
-/* 基础样式重置 */
 * {
-    box-sizing: border-box;
-    font: inherit;
+    margin: 0;
+    padding: 0;
 }
 
 html {
-    color: var(--main-text-color);
-    font-size: 62.5%;
-    /* 1rem = 10px */
+    font-size: 64.5%;
 }
 
 body {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 2rem;
-    padding: 0;
-    margin: 0;
     width: 100vw;
     height: 100vh;
-    font-family: 'Rubik', sans-serif;
 }
 
 /* 响应式设计 */
@@ -53,6 +46,7 @@ body {
 
 /* 主容器样式 */
 .container {
+    font-size: 2rem;
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -66,6 +60,13 @@ body {
     border-radius: 1rem;
     border: 1px solid #e0e0e0;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.container * {
+    box-sizing: border-box;
+    font: inherit;
+    color: var(--main-text-color);
+    font-family: 'Rubik', sans-serif;
 }
 
 /* 内容区域样式 */
