@@ -33,26 +33,23 @@ body {
     font-family: 'Rubik', sans-serif;
 }
 
-.confirm,
-.accepted,
-.rejected {
+.confirm {
     display: flex;
     flex-direction: column;
     overflow: hidden;
     width: 72rem;
     max-width: 100%;
     min-width: 34rem;
+    height: 50rem;
     max-height: 100%;
-    height: 46rem;
+    min-height: 46rem;
     background-color: #ffffff;
     border-radius: 1rem;
     border: 1px solid #e0e0e0;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
 }
 
-.confirm-body,
-.accepted-body,
-.rejected-body {
+.confirm-body {
     flex: 1;
     display: flex;
     align-items: flex-end;
@@ -61,36 +58,26 @@ body {
     margin: 2rem 4rem;
 }
 
-.confirm-body-title,
-.accepted-body-title,
-.rejected-body-title {
+.confirm-body-title {
     margin: 0;
     padding: 0;
     position: absolute;
-    transform: translateY(-50%);
     top: 5%;
     text-align: center;
     width: 100%;
 }
 
-.confirm-body-subtitle,
-.accepted-body-subtitle,
-.rejected-body-subtitle {
+.confirm-body-subtitle {
     margin: 0;
     padding: 0;
     position: absolute;
-    transform: translateY(-50%);
     top: 15%;
     text-align: center;
     width: 100%;
     font-size: 1.5rem;
 }
 
-.confirm-body-button,
-.confirm-body-button:link,
-.confirm-body-button:visited,
-.accepted-body-button,
-.rejected-body-button {
+.confirm-body-button {
     color: #fff;
     border-radius: 1rem;
     text-decoration: none;
@@ -103,6 +90,7 @@ body {
 
 .confirm-body-button-delete {
     background-color: #a43;
+    border: none;
 }
 
 .confirm-body-button-delete:hover {
@@ -111,29 +99,15 @@ body {
 
 .confirm-body-button-cancel {
     background-color: #6a4;
+    border: none;
 }
 
 .confirm-body-button-cancel:hover {
     background-color: #81c061;
 }
 
-.accepted-body-button,
-.rejected-body-button {
-    background-color: #6a4;
-}
-
-.accepted-body-button:hover,
-.rejected-body-button:hover {
-    background-color: #81c061;
-}
 
 .boi {
-    /* 整体定位调一下 */
-    /* FIXME 好像没用 */
-    --happiness: 0.9;
-    --derp: 1;
-    --px: 0.5;
-    --py: 0.5;
     width: 22rem;
     max-width: 100%;
     height: 22rem;
@@ -228,7 +202,6 @@ body {
     transform: translateX(-50%);
     overflow: hidden;
     border: 3px solid #962d2d;
-    -webkit-mask-image: -webkit-radial-gradient(white, black);
 }
 
 .boi-mouth::before {
@@ -253,10 +226,6 @@ body {
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.2);
     border-radius: 20rem 20rem 0 0;
-}
-
-.hidden {
-    display: none;
 }</style>
 </head>
 <body>
@@ -270,11 +239,10 @@ body {
 </head>
 
 <body>
-  <!-- 初始界面 -->
   <section class="confirm">
     <div class="confirm-body">
-      <h1 class="confirm-body-title">可以成为我的恋人嘛～</h1>
-      <h2 class="confirm-body-subtitle">小树希望你成为ta的对象，是否接受？</h2>
+      <h1 class="confirm-body-title">你确定要卸载吗</h1>
+      <h2 class="confirm-body-subtitle">希望不要卸载</h2>
       <figure class="boi" style="--happiness:0.9; --derp:1; --px:0.5; --py:0.5;">
         <div class="boi-blush boi-blush-left"></div>
         <div class="boi-blush boi-blush-right"></div>
@@ -282,148 +250,135 @@ body {
         <div class="boi-eye boi-eye-right"></div>
         <div class="boi-mouth"></div>
       </figure>
-      <a class="confirm-body-button confirm-body-button-cancel" href="javascript:void(0)">接受</a>
-      <a class="confirm-body-button confirm-body-button-delete" href="javascript:void(0)">拒绝</a>
-    </div>
-  </section>
-
-  <!-- 接受后的新界面 -->
-  <section class="accepted hidden">
-    <div class="accepted-body">
-      <h1 class="accepted-body-title">!!!喜欢你!!</h1>
-      <h2 class="accepted-body-subtitle">小树非常开心，祝你们幸福快乐！</h2>
-      <figure class="boi" style="--happiness:1; --derp:0; --px:0.5; --py:0.5;">
-        <div class="boi-blush boi-blush-left"></div>
-        <div class="boi-blush boi-blush-right"></div>
-        <div class="boi-eye boi-eye-left"></div>
-        <div class="boi-eye boi-eye-right"></div>
-        <div class="boi-mouth"></div>
-      </figure>
-      <a class="accepted-body-button" href="javascript:void(0)">返回</a>
-    </div>
-  </section>
-
-  <!-- 拒绝后的新界面 -->
-  <section class="rejected hidden">
-    <div class="rejected-body">
-      <h1 class="rejected-body-title">很难过...</h1>
-      <h2 class="rejected-body-subtitle">但尊重你的决定，祝你一切顺利！</h2>
-      <figure class="boi" style="--happiness:0.2; --derp:0; --px:0.5; --py:0.5;">
-        <div class="boi-blush boi-blush-left"></div>
-        <div class="boi-blush boi-blush-right"></div>
-        <div class="boi-eye boi-eye-left"></div>
-        <div class="boi-eye boi-eye-right"></div>
-        <div class="boi-mouth"></div>
-      </figure>
-      <a class="rejected-body-button" href="javascript:void(0)">返回</a>
+      <button class="confirm-body-button confirm-body-button-cancel">取消</button>
+      <button class="confirm-body-button confirm-body-button-delete">卸载</button>
     </div>
   </section>
 </body>
 
 </html><script>
-const confirmSection = document.querySelector('.confirm');
-const acceptedSection = document.querySelector('.accepted');
-const rejectedSection = document.querySelector('.rejected');
-const boi = document.querySelector('.boi');
-const btnDelete = document.querySelector('.confirm-body-button-delete');
-const btnCancel = document.querySelector('.confirm-body-button-cancel');
+const confirmSection = document.querySelector('.confirm')
+const boi = document.querySelector('.boi')
+const btnDelete = document.querySelector('.confirm-body-button-delete')
+const btnCancel = document.querySelector('.confirm-body-button-cancel')
+const title = document.querySelector('.confirm-body-title')
+const subtitle = document.querySelector('.confirm-body-subtitle')
 const current = {
     happiness: 0.9,
     derp: 1,
     px: 0.5,
     py: 0.5
-};
-const target = { ...current };
-let rejectCount = 0;
+}
+const target = { ...current }
+const acceptedtarget = {
+    happiness: 1,
+    derp: 0,
+    px: 0.5,
+    py: 0.5
+}
+const rejectedtarget = {
+    happiness: 0.2,
+    derp: 0,
+    px: 0.5,
+    py: 0.5
+}
+let rejectCount = 0
+const maxrejectCount = 2
+let isAnimating = true
 
-// 事件监听
-confirmSection.addEventListener('mousemove', onMouseMove);
-confirmSection.addEventListener('mouseleave', onMouseLeave);
+confirmSection.addEventListener('mousemove', ({ clientX: x, clientY: y }) => {
+    let dx1 = x - btnDelete.getBoundingClientRect().x - btnDelete.getBoundingClientRect().width * 0.5
+    let dy1 = y - btnDelete.getBoundingClientRect().y - btnDelete.getBoundingClientRect().height * 0.5
+    let dx2 = x - btnCancel.getBoundingClientRect().x - btnCancel.getBoundingClientRect().width * 0.5
+    let dy2 = y - btnCancel.getBoundingClientRect().y - btnCancel.getBoundingClientRect().height * 0.5
+    let px = (x - confirmSection.getBoundingClientRect().x) / confirmSection.getBoundingClientRect().width
+    let py = (y - confirmSection.getBoundingClientRect().y) / confirmSection.getBoundingClientRect().height
+    let distDelete = Math.sqrt(dx1 * dx1 + dy1 * dy1)
+    let distCancel = Math.sqrt(dx2 * dx2 + dy2 * dy2)
+    let happiness = Math.pow(distDelete / (distCancel + distDelete), 0.75)
+    target.happiness = happiness
+    target.derp = 0
+    target.px = px
+    target.py = py
+})
+
+confirmSection.addEventListener('mouseleave', () => {
+    target.happiness = 0.9
+    target.derp = 1
+    target.px = 0.5
+    target.py = 0.5
+})
 
 btnCancel.addEventListener('click', () => {
-    confirmSection.classList.add('hidden');
-    acceptedSection.classList.remove('hidden');
-    target.happiness = 1; // 开心到起飞
-    updateBoi();
-});
+    if (isAnimating) {
+        Object.assign(current, acceptedtarget)
+        btnCancel.innerHTML = '返回'
+        title.innerHTML = '已取消'
+        subtitle.innerHTML = '感谢您继续使用本插件'
+        btnDelete.style.visibility = 'hidden'
+        isAnimating = false
+    } else {
+        btnCancel.innerHTML = '取消'
+        title.innerHTML = '你确定要卸载吗'
+        subtitle.innerHTML = '希望不要卸载'
+        isAnimating = true
+        btnDelete.style.visibility = 'visible'
+        btnDelete.style.position = 'static'
+        btnDelete.style.left = ''
+        btnDelete.style.top = ''
+        updateBoi()
+    }
+})
 
 btnDelete.addEventListener('click', () => {
-    rejectCount++;
-    if (rejectCount >= 10) {
-        btnDelete.style.position = 'absolute';
-        btnDelete.style.left = `${Math.random() * 80}%`;
-        btnDelete.style.top = `${Math.random() * 80}%`;
-
-        // 展示拒绝界面
-        confirmSection.classList.add('hidden');
-        rejectedSection.classList.remove('hidden');
+    if (isAnimating) {
+        rejectCount++
+        if (rejectCount >= maxrejectCount) {
+            Object.assign(current, rejectedtarget)
+            btnDelete.innerHTML = '返回'
+            title.innerHTML = '已删除'
+            subtitle.innerHTML = '感谢您使用本插件'
+            btnCancel.style.visibility = 'hidden'
+            btnDelete.style.position = 'static'
+            btnDelete.style.left = ''
+            btnDelete.style.top = ''
+            isAnimating = false
+        } else {
+            btnDelete.style.position = 'absolute'
+            btnDelete.style.left = `${Math.random() * 80}%`
+            btnDelete.style.top = `${Math.random() * 80}%`
+            target.happiness = Math.max(0.1, target.happiness - 0.1)
+            btnCancel.style.transform = `scale(${1 + rejectCount * 0.1})`
+        }
+    } else {
+        btnDelete.innerHTML = '卸载'
+        title.innerHTML = '你确定要卸载吗'
+        subtitle.innerHTML = '希望不要卸载'
+        btnCancel.style.visibility = 'visible'
+        btnDelete.style.position = 'static'
+        btnDelete.style.left = ''
+        btnDelete.style.top = ''
+        isAnimating = true
+        updateBoi()
     }
-    target.happiness = Math.max(0.1, target.happiness - 0.1); // 每次点击拒绝，表情更委屈
-    btnCancel.style.transform = `scale(${1 + rejectCount * 0.1})`; // 接受按钮变大
-    updateBoi();
-});
-
-acceptedSection.querySelector('a').addEventListener('click', () => {
-    acceptedSection.classList.add('hidden');
-    confirmSection.classList.remove('hidden');
-    resetBoi();
-});
-
-rejectedSection.querySelector('a').addEventListener('click', () => {
-    rejectedSection.classList.add('hidden');
-    confirmSection.classList.remove('hidden');
-    resetBoi();
-});
-
-function onMouseMove({ clientX: x, clientY: y }) {
-    let dx1 = x - btnDelete.getBoundingClientRect().x - btnDelete.getBoundingClientRect().width * 0.5;
-    let dy1 = y - btnDelete.getBoundingClientRect().y - btnDelete.getBoundingClientRect().height * 0.5;
-    let dx2 = x - btnCancel.getBoundingClientRect().x - btnCancel.getBoundingClientRect().width * 0.5;
-    let dy2 = y - btnCancel.getBoundingClientRect().y - btnCancel.getBoundingClientRect().height * 0.5;
-    let px = (x - confirmSection.getBoundingClientRect().x) / confirmSection.getBoundingClientRect().width;
-    let py = (y - confirmSection.getBoundingClientRect().y) / confirmSection.getBoundingClientRect().height;
-    let distDelete = Math.sqrt(dx1 * dx1 + dy1 * dy1);
-    let distCancel = Math.sqrt(dx2 * dx2 + dy2 * dy2);
-    let happiness = Math.pow(distDelete / (distCancel + distDelete), 0.75);
-
-    target.happiness = happiness;
-    target.derp = 0;
-    target.px = px;
-    target.py = py;
-}
-
-function onMouseLeave() {
-    target.happiness = 0.9;
-    target.derp = 1;
-    target.px = 0.5;
-    target.py = 0.5;
-}
+})
 
 function updateBoi() {
     for (let prop in target) {
         if (target[prop] === current[prop]) {
-            continue;
+            continue
         } else if (Math.abs(target[prop] - current[prop]) < 0.01) {
-            current[prop] = target[prop];
+            current[prop] = target[prop]
         } else {
-            current[prop] += (target[prop] - current[prop]) * 0.1;
+            current[prop] += (target[prop] - current[prop]) * 0.1
         }
-        boi.style.setProperty(`--${prop}`, current[prop]);
+        boi.style.setProperty(`--${prop}`, current[prop])
     }
-    requestAnimationFrame(updateBoi);
+    if (!isAnimating) return
+    requestAnimationFrame(updateBoi)
 }
 
-function resetBoi() {
-    target.happiness = 0.9;
-    target.derp = 1;
-    target.px = 0.5;
-    target.py = 0.5;
-    rejectCount = 0;
-    btnCancel.style.transform = 'scale(1)';
-    btnDelete.style.position = 'static';
-}
-
-updateBoi();
+updateBoi()
 </script>
 </body>
 </html>
