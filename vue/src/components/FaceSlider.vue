@@ -204,41 +204,42 @@ function unHappy() {
   }
 }
 
+function handleMouseMove({ clientX: x, clientY: y }: MouseEvent) {
+  const container = document.querySelector('.container') as HTMLElement;
+  const btnHappy = document.querySelector('.button-happy') as HTMLElement;
+  const btnUnhappy = document.querySelector('.button-unhappy') as HTMLElement;
+
+  const unhappyRect = btnUnhappy.getBoundingClientRect();
+  const happyRect = btnHappy.getBoundingClientRect();
+  const containerRect = container.getBoundingClientRect();
+
+  const dx1 = x - (unhappyRect.x + unhappyRect.width * 0.5);
+  const dy1 = y - (unhappyRect.y + unhappyRect.height * 0.5);
+  const dx2 = x - (happyRect.x + happyRect.width * 0.5);
+  const dy2 = y - (happyRect.y + happyRect.height * 0.5);
+
+  const px = (x - containerRect.x) / containerRect.width;
+  const py = (y - containerRect.y) / containerRect.height;
+
+  const distUnhappy = Math.sqrt(dx1 * dx1 + dy1 * dy1);
+  const distHappy = Math.sqrt(dx2 * dx2 + dy2 * dy2);
+  const happiness = Math.pow(distUnhappy / (distHappy + distUnhappy), 0.75);
+
+  state.targetface = { ...state.targetface, happiness, derp: 0, px, py };
+}
+
+function handleMouseLeave() {
+  state.targetface = { ...config.states.normal.face };
+}
+
 onMounted(() => {
-  const container = document.querySelector('.container') as HTMLElement
-  const btnHappy = document.querySelector('.button-happy') as HTMLElement
-  const btnUnhappy = document.querySelector('.button-unhappy') as HTMLElement
-
-  container.addEventListener('mousemove', ({ clientX: x, clientY: y }: MouseEvent) => {
-    const unhappyRect = btnUnhappy.getBoundingClientRect()
-    const happyRect = btnHappy.getBoundingClientRect()
-    const containerRect = container.getBoundingClientRect()
-
-    const dx1 = x - (unhappyRect.x + unhappyRect.width * 0.5)
-    const dy1 = y - (unhappyRect.y + unhappyRect.height * 0.5)
-    const dx2 = x - (happyRect.x + happyRect.width * 0.5)
-    const dy2 = y - (happyRect.y + happyRect.height * 0.5)
-
-    const px = (x - containerRect.x) / containerRect.width
-    const py = (y - containerRect.y) / containerRect.height
-
-    const distUnhappy = Math.sqrt(dx1 * dx1 + dy1 * dy1)
-    const distHappy = Math.sqrt(dx2 * dx2 + dy2 * dy2)
-    const happiness = Math.pow(distUnhappy / (distHappy + distUnhappy), 0.75)
-
-    state.targetface = { ...state.targetface, happiness, derp: 0, px, py }
-  })
-
-  container.addEventListener('mouseleave', () => {
-    state.targetface = { ...config.states.normal.face }
-  })
-
   updateFace()
 })
+
 </script>
 
 <template>
-  <section class="container">
+  <section class="container" @mousemove="handleMouseMove" @mouseleave="handleMouseLeave">
     <div class="content">
       <h1 class="title">{{ state.ui.titleText }}</h1>
       <h2 class="subtitle">{{ state.ui.subtitleText }}</h2>
