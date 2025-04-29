@@ -1,152 +1,213 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { reactive, onMounted, defineProps } from 'vue'
+import type { CSSProperties } from 'vue'
 
-interface FaceState {
-  happiness: number
-  derp: number
-  px: number
-  py: number
+interface Props {
+  maxUnhappyCount?: number
+  animationSpeed?: number
+  normalFace?: { happiness: number; derp: number; px: number; py: number }
+  normalIUi?: { btnHappyText: string; btnUnhappyText: string; titleText: string; subtitleText: string }
 }
 
-interface UIState {
-  btnHappyText?: string
-  btnUnhappyText?: string
-  titleText?: string
-  subtitleText?: string
+interface Config {
+  maxUnhappyCount: number;
+  animationSpeed: number;
+  states: {
+    normal: {
+      face: {
+        happiness: number;
+        derp: number;
+        px: number;
+        py: number;
+      };
+      ui: {
+        btnHappyText: string;
+        btnUnhappyText: string;
+        titleText: string;
+        subtitleText: string;
+      };
+      uiStyle: {
+        btnHappyVisibility: CSSProperties['visibility'];
+        btnUnhappyVisibility: CSSProperties['visibility'];
+        btnUnhappyPosition: CSSProperties['position'];
+        btnUnhappyLeft: CSSProperties['left'];
+        btnUnhappyTop: CSSProperties['top'];
+        btnHappyTransform: CSSProperties['transform'];
+      };
+    };
+    happy: {
+      face: {
+        happiness: number;
+        derp: number;
+        px: number;
+        py: number;
+      };
+      ui: {
+        btnHappyText: string;
+        btnUnhappyText: string;
+        titleText: string;
+        subtitleText: string;
+      };
+      uiStyle: {
+        btnHappyVisibility: CSSProperties['visibility'];
+        btnUnhappyVisibility: CSSProperties['visibility'];
+        btnUnhappyPosition: CSSProperties['position'];
+        btnUnhappyLeft: CSSProperties['left'];
+        btnUnhappyTop: CSSProperties['top'];
+        btnHappyTransform: CSSProperties['transform'];
+      };
+    };
+    unhappy: {
+      face: {
+        happiness: number;
+        derp: number;
+        px: number;
+        py: number;
+      };
+      ui: {
+        btnHappyText: string;
+        btnUnhappyText: string;
+        titleText: string;
+        subtitleText: string;
+      };
+      uiStyle: {
+        btnHappyVisibility: CSSProperties['visibility'];
+        btnUnhappyVisibility: CSSProperties['visibility'];
+        btnUnhappyPosition: CSSProperties['position'];
+        btnUnhappyLeft: CSSProperties['left'];
+        btnUnhappyTop: CSSProperties['top'];
+        btnHappyTransform: CSSProperties['transform'];
+      };
+    };
+  };
 }
 
-interface ConfigState {
-  face: FaceState
-  ui: UIState
+const props = defineProps<Props>()
+
+const config: Config = {
+  maxUnhappyCount: props.maxUnhappyCount || 3,
+  animationSpeed: props.animationSpeed || 0.1,
+  states: {
+    normal: {
+      face: props.normalFace || { happiness: 0.9, derp: 1, px: 0.5, py: 0.5 },
+      ui: props.normalIUi || {
+        btnHappyText: "取消",
+        btnUnhappyText: "卸载",
+        titleText: "你确定要卸载吗",
+        subtitleText: "希望不要卸载"
+      },
+      uiStyle: {
+        btnHappyVisibility: "visible",
+        btnUnhappyVisibility: "visible",
+        btnUnhappyPosition: "static",
+        btnUnhappyLeft: "0",
+        btnUnhappyTop: "0",
+        btnHappyTransform: "scale(1)"
+      }
+    },
+    happy: {
+      face: { happiness: 1, derp: 0, px: 0.5, py: 0.5 },
+      ui: {
+        btnHappyText: "返回",
+        btnUnhappyText: "",
+        titleText: "已取消",
+        subtitleText: "感谢您继续使用本插件"
+      },
+      uiStyle: {
+        btnHappyVisibility: "visible",
+        btnUnhappyVisibility: "hidden",
+        btnUnhappyPosition: "static",
+        btnUnhappyLeft: "0",
+        btnUnhappyTop: "0",
+        btnHappyTransform: "scale(1)"
+      }
+    },
+    unhappy: {
+      face: { happiness: 0.2, derp: 0, px: 0.5, py: 0.5 },
+      ui: {
+        btnHappyText: "",
+        btnUnhappyText: "返回",
+        titleText: "已删除",
+        subtitleText: "感谢您使用本插件"
+      },
+      uiStyle: {
+        btnHappyVisibility: "hidden",
+        btnUnhappyVisibility: "visible",
+        btnUnhappyPosition: "static",
+        btnUnhappyLeft: "0",
+        btnUnhappyTop: "0",
+        btnHappyTransform: "scale(1)"
+      }
+    }
+  }
+}
+
+const state = reactive({
+  rejectCount: 0,
+  animationId: null as number | null,
+  ui: { ...config.states.normal.ui },
+  uiStyle: { ...config.states.normal.uiStyle },
+  currentface: { ...config.states.normal.face },
+  targetface: { ...config.states.normal.face }
+})
+
+
+function updateFace() {
+  for (const key of Object.keys(state.targetface) as (keyof Config['states']['normal']['face'])[]) {
+    if (state.targetface[key] === state.currentface[key]) continue
+    if (Math.abs(state.targetface[key] - state.currentface[key]) < 0.01) {
+      state.currentface[key] = state.targetface[key]
+    } else {
+      state.currentface[key] += (state.targetface[key] - state.currentface[key]) * config.animationSpeed
+    }
+  }
+  console.log(state.currentface)
+  state.animationId = requestAnimationFrame(updateFace)
+}
+
+function happy() {
+  if (state.animationId) {
+    state.ui = { ...config.states.happy.ui }
+    state.uiStyle = { ...config.states.happy.uiStyle }
+    cancelAnimationFrame(state.animationId)
+    state.animationId = null
+    state.currentface = { ...config.states.happy.face }
+  } else {
+    state.rejectCount = 0
+    state.ui = { ...config.states.normal.ui }
+    state.uiStyle = { ...config.states.normal.uiStyle }
+    updateFace()
+  }
+}
+
+function unHappy() {
+  if (state.animationId) {
+    state.rejectCount++
+    if (state.rejectCount >= config.maxUnhappyCount) {
+      state.ui = { ...config.states.happy.ui }
+      state.uiStyle = { ...config.states.happy.uiStyle }
+      cancelAnimationFrame(state.animationId)
+      state.animationId = null
+      state.currentface = { ...config.states.unhappy.face }
+    } else {
+      state.uiStyle.btnUnhappyPosition = 'absolute'
+      state.uiStyle.btnUnhappyLeft = `${Math.random() * 80}%`
+      state.uiStyle.btnUnhappyTop = `${Math.random() * 80}%`
+      state.targetface.happiness = Math.max(0.1, state.targetface.happiness - 0.1)
+      state.uiStyle.btnHappyTransform = `scale(${1 + state.rejectCount * 0.1})`
+    }
+  } else {
+    state.rejectCount = 0
+    state.ui = { ...config.states.normal.ui }
+    state.uiStyle = { ...config.states.normal.uiStyle }
+    updateFace()
+  }
 }
 
 onMounted(() => {
   const container = document.querySelector('.container') as HTMLElement
-  const face = document.querySelector('.face-slider') as HTMLElement
   const btnHappy = document.querySelector('.button-happy') as HTMLElement
   const btnUnhappy = document.querySelector('.button-unhappy') as HTMLElement
-  const title = document.querySelector('.title') as HTMLElement
-  const subtitle = document.querySelector('.subtitle') as HTMLElement
-
-  const config: {
-    maxUnhappyCount: number
-    animationSpeed: number
-    states: {
-      normal: ConfigState
-      happy: ConfigState
-      unhappy: ConfigState
-    }
-  } = {
-    maxUnhappyCount: 1,
-    animationSpeed: 0.1,
-    states: {
-      normal: {
-        face: { happiness: 0.9, derp: 1, px: 0.5, py: 0.5 },
-        ui: {
-          btnHappyText: btnHappy.innerHTML,
-          btnUnhappyText: btnUnhappy.innerHTML,
-          titleText: title.innerHTML,
-          subtitleText: subtitle.innerHTML
-        }
-      },
-      happy: {
-        face: { happiness: 1, derp: 0, px: 0.5, py: 0.5 },
-        ui: {
-          btnHappyText: '返回',
-          titleText: '已取消',
-          subtitleText: '感谢您继续使用本插件'
-        }
-      },
-      unhappy: {
-        face: { happiness: 0.2, derp: 0, px: 0.5, py: 0.5 },
-        ui: {
-          btnUnhappyText: '返回',
-          titleText: '已删除',
-          subtitleText: '感谢您使用本插件'
-        }
-      }
-    }
-  }
-
-  const state: {
-    rejectCount: number
-    animationId: number | null
-    current: FaceState
-    target: FaceState
-  } = {
-    rejectCount: 0,
-    animationId: null,
-    current: { ...config.states.normal.face },
-    target: { ...config.states.normal.face }
-  }
-
-  function updateFaceCSS(): void {
-    Object.entries(state.current).forEach(([prop, value]) => {
-      face.style.setProperty(`--${prop}`, value.toString())
-    })
-  }
-
-  function transitionToState(stateType: keyof typeof config.states, hideButton: HTMLElement | null = null): void {
-    const targetState = config.states[stateType]
-
-    if (targetState.face) {
-      Object.assign(state.current, targetState.face)
-    }
-
-    if (targetState.ui) {
-      const { btnHappyText, btnUnhappyText, titleText, subtitleText } = targetState.ui
-
-      if (btnHappyText) btnHappy.innerHTML = btnHappyText
-      if (btnUnhappyText) btnUnhappy.innerHTML = btnUnhappyText
-      if (titleText) title.innerHTML = titleText
-      if (subtitleText) subtitle.innerHTML = subtitleText
-    }
-
-    if (hideButton) {
-      hideButton.style.visibility = 'hidden'
-    } else {
-      btnHappy.style.visibility = 'visible'
-      btnUnhappy.style.visibility = 'visible'
-      btnUnhappy.style.position = 'static'
-      btnUnhappy.style.left = ''
-      btnUnhappy.style.top = ''
-      btnHappy.style.transform = 'scale(1)'
-    }
-    updateFaceCSS()
-  }
-
-  function stopAnimation(): void {
-    if (state.animationId) {
-      cancelAnimationFrame(state.animationId)
-      state.animationId = null
-    }
-  }
-
-  function startAnimation(): void {
-    function updateFace(): void {
-      let needsUpdate = false
-
-      for (const prop in state.target) {
-        if (state.target[prop as keyof FaceState] === state.current[prop as keyof FaceState]) continue
-
-        needsUpdate = true
-        if (Math.abs(state.target[prop as keyof FaceState] - state.current[prop as keyof FaceState]) < 0.01) {
-          state.current[prop as keyof FaceState] = state.target[prop as keyof FaceState]
-        } else {
-          state.current[prop as keyof FaceState] +=
-            (state.target[prop as keyof FaceState] - state.current[prop as keyof FaceState]) * config.animationSpeed
-        }
-      }
-
-      if (needsUpdate) {
-        updateFaceCSS()
-      }
-
-      state.animationId = requestAnimationFrame(updateFace)
-    }
-
-    updateFace()
-  }
 
   container.addEventListener('mousemove', ({ clientX: x, clientY: y }: MouseEvent) => {
     const unhappyRect = btnUnhappy.getBoundingClientRect()
@@ -165,64 +226,48 @@ onMounted(() => {
     const distHappy = Math.sqrt(dx2 * dx2 + dy2 * dy2)
     const happiness = Math.pow(distUnhappy / (distHappy + distUnhappy), 0.75)
 
-    state.target = { ...state.target, happiness, derp: 0, px, py }
+    state.targetface = { ...state.targetface, happiness, derp: 0, px, py }
   })
 
   container.addEventListener('mouseleave', () => {
-    state.target = { ...config.states.normal.face }
+    state.targetface = { ...config.states.normal.face }
   })
 
-  btnHappy.addEventListener('click', () => {
-    if (state.animationId) {
-      btnHappy.style.transform = 'scale(1)'
-      stopAnimation()
-      transitionToState('happy', btnUnhappy)
-    } else {
-      state.rejectCount = 0
-      transitionToState('normal')
-      startAnimation()
-    }
-  })
-
-  btnUnhappy.addEventListener('click', () => {
-    if (state.animationId) {
-      state.rejectCount++
-
-      if (state.rejectCount >= config.maxUnhappyCount) {
-        stopAnimation()
-        transitionToState('unhappy', btnHappy)
-      } else {
-        btnUnhappy.style.position = 'absolute'
-        btnUnhappy.style.left = `${Math.random() * 80}%`
-        btnUnhappy.style.top = `${Math.random() * 80}%`
-        state.target.happiness = Math.max(0.1, state.target.happiness - 0.1)
-        btnHappy.style.transform = `scale(${1 + state.rejectCount * 0.1})`
-      }
-    } else {
-      state.rejectCount = 0
-      transitionToState('normal')
-      startAnimation()
-    }
-  })
-
-  startAnimation()
+  updateFace()
 })
 </script>
 
 <template>
   <section class="container">
     <div class="content">
-      <h1 class="title">你确定要卸载吗</h1>
-      <h2 class="subtitle">希望不要卸载</h2>
-      <figure class="face-slider">
+      <h1 class="title">{{ state.ui.titleText }}</h1>
+      <h2 class="subtitle">{{ state.ui.subtitleText }}</h2>
+      <figure class="face-slider" :style="{
+        '--happiness': state.currentface.happiness,
+        '--derp': state.currentface.derp,
+        '--px': state.currentface.px,
+        '--py': state.currentface.py
+      }">
         <div class="face-slider-blush face-slider-blush-left"></div>
         <div class="face-slider-blush face-slider-blush-right"></div>
         <div class="face-slider-eye face-slider-eye-left"></div>
         <div class="face-slider-eye face-slider-eye-right"></div>
         <div class="face-slider-mouth"></div>
       </figure>
-      <button class="button button-happy">取消</button>
-      <button class="button button-unhappy">卸载</button>
+      <button class="button button-happy" @click="happy" :style="{
+        visibility: state.uiStyle.btnHappyVisibility,
+        transform: state.uiStyle.btnHappyTransform
+      }">
+        {{ state.ui.btnHappyText }}
+      </button>
+      <button class="button button-unhappy" @click="unHappy" :style="{
+        visibility: state.uiStyle.btnUnhappyVisibility,
+        position: state.uiStyle.btnUnhappyPosition,
+        left: state.uiStyle.btnUnhappyLeft,
+        top: state.uiStyle.btnUnhappyTop
+      }">
+        {{ state.ui.btnUnhappyText }}
+      </button>
     </div>
   </section>
 </template>
@@ -231,29 +276,6 @@ onMounted(() => {
 * {
   box-sizing: border-box;
   font: inherit;
-}
-
-html {
-  color: #333;
-  font-size: 62.5%;
-}
-
-@media screen and (max-width: 480px) {
-  html {
-    font-size: 50%;
-  }
-}
-
-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 2rem;
-  padding: 0;
-  margin: 0;
-  width: 100vw;
-  height: 100vh;
-  font-family: 'Rubik', sans-serif;
 }
 
 .container {
@@ -330,10 +352,6 @@ body {
 }
 
 .face-slider {
-  --happiness: 0.9;
-  --derp: 1;
-  --px: 0.5;
-  --py: 0.5;
   width: 22rem;
   max-width: 100%;
   height: 22rem;
