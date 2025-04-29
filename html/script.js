@@ -88,7 +88,7 @@ function stopAnimation() {
 
 function startAnimation() {
     function updateFace() {
-        let needsUpdate = false
+
 
         for (const prop in state.target) {
             if (state.target[prop] === state.current[prop]) continue
@@ -100,14 +100,9 @@ function startAnimation() {
                 state.current[prop] += (state.target[prop] - state.current[prop]) * config.animationSpeed
             }
         }
-
-        if (needsUpdate) {
-            updateFaceCSS()
-        }
-
+        updateFaceCSS()
         state.animationId = requestAnimationFrame(updateFace)
     }
-
     updateFace()
 }
 
