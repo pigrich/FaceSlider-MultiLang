@@ -269,7 +269,7 @@ const title = document.querySelector('.title')
 const subtitle = document.querySelector('.subtitle')
 
 const config = {
-    maxUnhappyCount: 1,
+    maxUnhappyCount: 2,
     animationSpeed: 0.1,
     states: {
         normal: {
@@ -285,6 +285,7 @@ const config = {
             face: { happiness: 1, derp: 0, px: 0.5, py: 0.5 },
             ui: {
                 btnHappyText: '返回',
+                btnUnhappyText: '返回',
                 titleText: '已取消',
                 subtitleText: '感谢您继续使用本插件'
             }
@@ -292,6 +293,7 @@ const config = {
         unhappy: {
             face: { happiness: 0.2, derp: 0, px: 0.5, py: 0.5 },
             ui: {
+                btnHappyText: '返回',
                 btnUnhappyText: '返回',
                 titleText: '已删除',
                 subtitleText: '感谢您使用本插件'
@@ -315,29 +317,20 @@ function updateFaceCSS() {
 
 function transitionToState(stateType, hideButton = null) {
     const targetState = config.states[stateType]
-
-    if (targetState.face) {
-        Object.assign(state.current, targetState.face)
-    }
-
-    if (targetState.ui) {
-        const { btnHappyText, btnUnhappyText, titleText, subtitleText } = targetState.ui
-
-        if (btnHappyText) btnHappy.innerHTML = btnHappyText
-        if (btnUnhappyText) btnUnhappy.innerHTML = btnUnhappyText
-        if (titleText) title.innerHTML = titleText
-        if (subtitleText) subtitle.innerHTML = subtitleText
-    }
-
+    Object.assign(state.current, targetState.face)
+    btnHappy.innerHTML = targetState.ui.btnUnhappyText
+    btnUnhappy.innerHTML = targetState.ui.btnUnhappyText
+    title.innerHTML = targetState.ui.titleText
+    subtitle.innerHTML = targetState.ui.subtitleText
     if (hideButton) {
         hideButton.style.visibility = 'hidden'
-    } else {
-        btnHappy.style.visibility = 'visible'
-        btnUnhappy.style.visibility = 'visible'
         btnUnhappy.style.position = 'static'
         btnUnhappy.style.left = ''
         btnUnhappy.style.top = ''
         btnHappy.style.transform = 'scale(1)'
+    } else {
+        btnHappy.style.visibility = 'visible'
+        btnUnhappy.style.visibility = 'visible'
     }
     updateFaceCSS()
 }
@@ -351,8 +344,6 @@ function stopAnimation() {
 
 function startAnimation() {
     function updateFace() {
-
-
         for (const prop in state.target) {
             if (state.target[prop] === state.current[prop]) continue
 
