@@ -275,25 +275,32 @@ onMounted(() => {
 </template>
 
 <style scoped>
-* {
-  box-sizing: border-box;
-  font: inherit;
-}
-
 .container {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  width: 72rem;
+  width: 72em;
   max-width: 100%;
-  min-width: 34rem;
-  height: 50rem;
+  min-width: 34em;
+  height: 50em;
   max-height: 100%;
-  min-height: 46rem;
+  min-height: 46em;
   background-color: #ffffff;
-  border-radius: 1rem;
+  border-radius: 1em;
   border: 1px solid #e0e0e0;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  font-size: 10px;
+}
+
+@media screen and (max-width: 480px) {
+  .container {
+    font-size: 5px;
+  }
+}
+
+.container,
+.container * {
+  box-sizing: border-box;
 }
 
 .content {
@@ -302,7 +309,8 @@ onMounted(() => {
   align-items: flex-end;
   justify-content: space-between;
   position: relative;
-  margin: 2rem 4rem;
+  margin: 2em 4em;
+  font-size: 100%;
 }
 
 .title {
@@ -312,6 +320,7 @@ onMounted(() => {
   top: 5%;
   text-align: center;
   width: 100%;
+  font-size: 2em;
 }
 
 .subtitle {
@@ -321,17 +330,17 @@ onMounted(() => {
   top: 15%;
   text-align: center;
   width: 100%;
-  font-size: 1.5rem;
+  font-size: 1.5em;
 }
 
 .button {
   color: #fff;
-  border-radius: 1rem;
+  border-radius: 1em;
   text-decoration: none;
-  padding: 1rem 2rem;
-  margin-bottom: 1rem;
-  min-width: 10rem;
+  padding: 1em 2em;
+  margin-bottom: 1em;
   text-align: center;
+  font-size: 1.5em;
   transition: background-color 0.3s, transform 0.3s;
 }
 
@@ -354,9 +363,13 @@ onMounted(() => {
 }
 
 .face-slider {
-  width: 22rem;
+  --happiness: 0.9;
+  --derp: 1;
+  --px: 0.5;
+  --py: 0.5;
+  width: 22em;
   max-width: 100%;
-  height: 22rem;
+  height: 22em;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -459,7 +472,7 @@ onMounted(() => {
   top: 0;
   left: 50%;
   background-color: white;
-  border-radius: 0 0 0.5rem 0.5rem;
+  border-radius: 0 0 0.5em 0.5em;
 }
 
 .face-slider-mouth::after {
@@ -471,6 +484,6 @@ onMounted(() => {
   left: 10%;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.2);
-  border-radius: 20rem 20rem 0 0;
+  border-radius: 20em 20em 0 0;
 }
 </style>
