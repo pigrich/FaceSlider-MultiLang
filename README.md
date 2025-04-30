@@ -11,7 +11,7 @@
 ### 新手指南
 如果你是新手，请选择仓库的 `gh-pages` 分支，直接下载 ZIP 文件，解压后点击 `index.html` 即可运行。
 
-<img src="docs/teach.gif" alt="教学视频" width="1000" />
+![Coding](docs/teach.gif)
 
 ### 调试模式
 1. 克隆仓库：
