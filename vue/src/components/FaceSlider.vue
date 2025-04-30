@@ -1,6 +1,10 @@
 <script setup lang="ts">
-import { reactive, onMounted, defineProps } from 'vue'
+import { ref, reactive, onMounted, defineProps } from 'vue'
 import type { CSSProperties } from 'vue'
+
+const containerRef = ref<HTMLElement>(null!);
+const btnHappyRef = ref<HTMLElement>(null!);
+const btnUnhappyRef = ref<HTMLElement>(null!);
 
 interface Props {
   maxUnhappyCount?: number
@@ -205,13 +209,10 @@ function unHappy() {
 }
 
 function handleMouseMove({ clientX: x, clientY: y }: MouseEvent) {
-  const container = document.querySelector('.container') as HTMLElement;
-  const btnHappy = document.querySelector('.button-happy') as HTMLElement;
-  const btnUnhappy = document.querySelector('.button-unhappy') as HTMLElement;
 
-  const unhappyRect = btnUnhappy.getBoundingClientRect();
-  const happyRect = btnHappy.getBoundingClientRect();
-  const containerRect = container.getBoundingClientRect();
+  const unhappyRect = containerRef.value.getBoundingClientRect()
+  const happyRect = btnHappyRef.value.getBoundingClientRect()
+  const containerRect = containerRef.value.getBoundingClientRect()
 
   const dx1 = x - (unhappyRect.x + unhappyRect.width * 0.5);
   const dy1 = y - (unhappyRect.y + unhappyRect.height * 0.5);
@@ -239,7 +240,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <section class="container" @mousemove="handleMouseMove" @mouseleave="handleMouseLeave">
+  <section class="container" ref="containerRef" @mousemove="handleMouseMove" @mouseleave="handleMouseLeave">
     <div class="content">
       <h1 class="title">{{ state.ui.titleText }}</h1>
       <h2 class="subtitle">{{ state.ui.subtitleText }}</h2>
@@ -255,13 +256,13 @@ onMounted(() => {
         <div class="face-slider-eye face-slider-eye-right"></div>
         <div class="face-slider-mouth"></div>
       </figure>
-      <button class="button button-happy" @click="happy" :style="{
+      <button class="button button-happy" ref="btnHappyRef" @click="happy" :style="{
         visibility: state.uiStyle.btnHappyVisibility,
         transform: state.uiStyle.btnHappyTransform
       }">
         {{ state.ui.btnHappyText }}
       </button>
-      <button class="button button-unhappy" @click="unHappy" :style="{
+      <button class="button button-unhappy" ref="btnUnhappyRef" @click="unHappy" :style="{
         visibility: state.uiStyle.btnUnhappyVisibility,
         position: state.uiStyle.btnUnhappyPosition,
         left: state.uiStyle.btnUnhappyLeft,
