@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import FaceSlider from './components/FaceSlider.vue';
 
-const maxUnhappyCount = 5;
-const animationSpeed = 0.1;
-const normalFace = { happiness: 0.9, derp: 1, px: 0.5, py: 0.5 };
+const maxUnhappyCount = 5
+const animationSpeed = 0.1
+const normalFace = { happiness: 0.9, derp: 1, px: 0.5, py: 0.5 }
 const normalIUi = {
   btnHappyText: "取消",
   btnUnhappyText: "卸载",

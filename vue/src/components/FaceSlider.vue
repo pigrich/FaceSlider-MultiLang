@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { ref, reactive, onMounted, defineProps } from 'vue'
+import { ref, reactive, onMounted, onUnmounted, defineProps } from 'vue'
 import type { CSSProperties } from 'vue'
 
-const containerRef = ref<HTMLElement>(null!);
-const btnHappyRef = ref<HTMLElement>(null!);
-const btnUnhappyRef = ref<HTMLElement>(null!);
+const containerRef = ref<HTMLElement>(null!)
+const btnHappyRef = ref<HTMLElement>(null!)
+const btnUnhappyRef = ref<HTMLElement>(null!)
 
 interface Props {
   maxUnhappyCount?: number
@@ -54,7 +54,7 @@ interface Config {
       };
       uiStyle: {
         btnHappyVisibility: CSSProperties['visibility'];
-        btnUnhappyVisibility: CSSProperties['visibility'];
+        btnUnhappyVisibility: CSSProperties['visibility']
         btnUnhappyPosition: CSSProperties['position'];
         btnUnhappyLeft: CSSProperties['left'];
         btnUnhappyTop: CSSProperties['top'];
@@ -165,7 +165,6 @@ function updateFace() {
       state.currentface[key] += (state.targetface[key] - state.currentface[key]) * config.animationSpeed
     }
   }
-  console.log(state.currentface)
   state.animationId = requestAnimationFrame(updateFace)
 }
 
@@ -214,27 +213,34 @@ function handleMouseMove({ clientX: x, clientY: y }: MouseEvent) {
   const happyRect = btnHappyRef.value.getBoundingClientRect()
   const containerRect = containerRef.value.getBoundingClientRect()
 
-  const dx1 = x - (unhappyRect.x + unhappyRect.width * 0.5);
-  const dy1 = y - (unhappyRect.y + unhappyRect.height * 0.5);
-  const dx2 = x - (happyRect.x + happyRect.width * 0.5);
-  const dy2 = y - (happyRect.y + happyRect.height * 0.5);
+  const dx1 = x - (unhappyRect.x + unhappyRect.width * 0.5)
+  const dy1 = y - (unhappyRect.y + unhappyRect.height * 0.5)
+  const dx2 = x - (happyRect.x + happyRect.width * 0.5)
+  const dy2 = y - (happyRect.y + happyRect.height * 0.5)
 
-  const px = (x - containerRect.x) / containerRect.width;
-  const py = (y - containerRect.y) / containerRect.height;
+  const px = (x - containerRect.x) / containerRect.width
+  const py = (y - containerRect.y) / containerRect.height
 
-  const distUnhappy = Math.sqrt(dx1 * dx1 + dy1 * dy1);
-  const distHappy = Math.sqrt(dx2 * dx2 + dy2 * dy2);
-  const happiness = Math.pow(distUnhappy / (distHappy + distUnhappy), 0.75);
+  const distUnhappy = Math.sqrt(dx1 * dx1 + dy1 * dy1)
+  const distHappy = Math.sqrt(dx2 * dx2 + dy2 * dy2)
+  const happiness = Math.pow(distUnhappy / (distHappy + distUnhappy), 0.75)
 
-  state.targetface = { ...state.targetface, happiness, derp: 0, px, py };
+  state.targetface = { ...state.targetface, happiness, derp: 0, px, py }
 }
 
 function handleMouseLeave() {
-  state.targetface = { ...config.states.normal.face };
+  state.targetface = { ...config.states.normal.face }
 }
 
 onMounted(() => {
   updateFace()
+})
+
+onUnmounted(() => {
+  if (state.animationId) {
+    cancelAnimationFrame(state.animationId)
+    state.animationId = null
+  }
 })
 
 </script>
