@@ -27,6 +27,7 @@
      Vue 将其封装成了一个可移植的组件，可用于你的项目中：
      ```bash
      cd vue
+     npm install # 或者 pnpm install
      npm run dev # 或者 pnpm dev
      ```
 
