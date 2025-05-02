@@ -2,8 +2,10 @@ name: Merge HTML, CSS, and JS into deployment/index.html
 
 on:
   push:
+    branches:
+      - main # 仅监听 main 分支
     paths:
-      - 'html/**' # 仅当 html 文件夹下的文件发生更改时触发
+      - 'html/**' # 仅监听 vue 文件夹下的更改
 
 jobs:
   merge:
