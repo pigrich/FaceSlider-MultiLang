@@ -43,6 +43,11 @@ Face &Face::setFaceX(double x)
     return *this;
 }
 
+double Face::faceX() const
+{
+    return x_;
+}
+
 Face &Face::setFaceY(double y)
 {
     y_ = y;
@@ -60,12 +65,22 @@ Face &Face::setFaceY(double y)
     return *this;
 }
 
+double Face::faceY() const
+{
+    return y_;
+}
+
 Face &Face::setDrep(double drep)
 {
     drep_ = drep;
     eyes_[0]->updateBallPos(x_, y_, drep_);
     eyes_[1]->updateBallPos(x_, y_, drep_);
     return *this;
+}
+
+double Face::drep() const
+{
+    return drep_;
 }
 
 static const int BorderWidth = 3;
@@ -128,6 +143,11 @@ Face &Face::setHappiness(double happiness)
     mouth_->move(mouth_->pos() - QPoint(mouth_->width() / 2, mouth_->height() / 2)); // 移到中心点
     update();
     return *this;
+}
+
+double Face::happiness() const
+{
+    return happiness_;
 }
 
 bool Face::eventFilter(QObject *o, QEvent *e)

@@ -19,9 +19,13 @@ public:
     ~Face();
 
     Face &setFaceX(double x);
+    double faceX() const;
     Face &setFaceY(double y);
+    double faceY() const;
     Face &setDrep(double drep);
+    double drep() const;
     Face &setHappiness(double happiness);
+    double happiness() const;
 
 protected:
     bool eventFilter(QObject *o, QEvent *e) override;

@@ -17,9 +17,9 @@ set(TS_FILES FaceSlider_zh_CN.ts
 
 set(PROJECT_SOURCES
         main.cpp
-        Widget.cpp
-        Widget.h
-        Widget.ui
+        FaceSlider.cpp
+        FaceSlider.h
+        FaceSlider.ui
         StyleLoader.h
         StyleLoader.cpp
         Face.h Face.cpp Face.ui
