@@ -19,7 +19,7 @@ cmake --build ./build --target all
 
 ## 效果展示
 
-
+![image](https://github.com/user-attachments/assets/79cf60e8-96ad-4b5e-aa54-9746488b502f)
 
 ## 不足
 
@@ -74,6 +74,8 @@ int main() {
 ## 其他
 
 本C++版本还提供了**多语言**功能的支持，您可**右键界面**，选择相应的语言，目前仅支持简体中文、English。
+
+![image](https://github.com/user-attachments/assets/6cf77cc4-5cc0-4f7e-9de6-4122614d3d9e)
 
 ## 贡献
 
