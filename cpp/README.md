@@ -23,8 +23,8 @@ cmake --build ./build --target all
 
 ## 效果展示
 
-<img src="https://github.com/user-attachments/assets/d76a4020-cc39-4eba-9549-4e553c807bb9" alt="image" style="zoom: 50%;" />
-
+<img src="https://github.com/user-attachments/assets/d76a4020-cc39-4eba-9549-4e553c807bb9" title="interface display" style="zoom: 50%;" />
+=======
 ## 不足
 
 本C++项目与Web版本存在一定的差距，主要有三点：
@@ -79,8 +79,8 @@ int main() {
 
 本C++版本还提供了**多语言**功能的支持，您可**右键界面**，选择相应的语言，目前仅支持简体中文、English。
 
-<img src="https://github.com/user-attachments/assets/cbe65c33-7e6d-447d-92a6-e778033f1712" alt="image" style="zoom:50%;" />
-
+<img src="https://github.com/user-attachments/assets/cbe65c33-7e6d-447d-92a6-e778033f1712" title="multi language" style="zoom:50%;" />
+=======
 ## 贡献
 
 欢迎提交 Issue 或 Pull Request 来改进此组件。
